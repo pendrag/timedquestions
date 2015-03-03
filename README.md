@@ -7,5 +7,5 @@ To use it follow this steps:
 
 * Download all the files in the project
 * Edit `questions.js` and specify there your questions
-* Open with a modern browser the `index.html` page
+* Open in a modern browser the `index.html` page
 * The controls at the bottom of the page are intuitive, play with them!
