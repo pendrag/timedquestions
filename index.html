@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Questions</title>
+
+    <!--[if lt IE 9]>
+	<script>
+		document.createElement('figure');
+		document.createElement('figcaption');
+	</script>
+	<![endif]-->
+
+    <style>
+        body {
+            text-align: center;
+            color: black;
+            font-family: verdana;
+        }
+        pre {
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px #DDD solid;
+        }
+        .countdown {
+            font-size: 80px;
+            line-height: 100px;
+            width: 100%; 
+            display: block;
+            overflow: hidden;
+            vertical-align: middle;
+            color: green;
+
+        }
+        .topic {
+            color: gray;
+        }
+        #start {
+            color: green;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+        }
+    </style>
+
+    <link href="assets/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="assets/awesome/css/font-awesome.css" rel="stylesheet">
+
+</head>
+<body id='body'>
+
+    <div id="titles">
+        <h2 id="topic" class="topic">Topic</h2>
+        <h1 id="question">Question</h1>
+    </div>
+
+    <div id="cn" class="countdown">countdown</div>
+    <br/>
+    <div class="footer">
+        <span class="icon-stack" id="prev">
+            <i class="icon-circle icon-stack-base"></i>
+            <i class="icon-arrow-left icon-light"></i>
+        </span>
+        <span class="icon-stack" id="start">
+            <i class="icon-circle icon-stack-base"></i>
+            <i class="icon-time icon-light"></i>
+        </span>
+        <span class="icon-stack" id="refresh">
+            <i class="icon-circle icon-stack-base"></i>
+            <i class="icon-refresh icon-light"></i>
+        </span>
+        <span class="icon-stack" id="next">
+            <i class="icon-circle icon-stack-base"></i>
+            <i class="icon-arrow-right icon-light"></i>
+        </span>
+    </div>
+
+
+
+ <!-- JAVASCRIPT from here -->
+ <script src="assets/jquery-1.11.2.min.js"></script>
+ <script src="assets/jquery.countdown.min.js"></script>
+ <script src="questions.js"></script>
+ 
+ <script type="text/javascript">
+
+    var index = 0;
+
+    var showQuestion = function () {
+        $('#cn').css({'background-color': 'white', 'color': 'green'});
+        $('#question').html(questions[index]['question']);
+        $('#topic').html(questions[index]['topic']);
+        $('#cn')
+        .countdown((new Date()).getTime() + questions[index]['time'] * 1000)
+        .on('update.countdown', function(event) {
+            $(this).html(event.strftime('%M:%S'));
+        })
+        .on('finish.countdown', function(event) {
+            $(this).html('00:00');
+            $('#cn').css({'background-color': 'red', 'color': 'black'});
+        })
+        .on('stop.countdown', function(event) {
+            $(this).html(event.strftime('%M:%S'));
+        });
+    };
+
+    $('#start').click(function(){
+        $('#start i:nth-child(1)').fadeToggle().fadeToggle();
+        $('#cn').fadeToggle(function () {
+            showQuestion();
+        });
+        $('#cn').fadeToggle();
+    });
+
+    $('#next').click(function(){
+        $('#next i:nth-child(1)').fadeToggle().fadeToggle();
+        $('#titles').fadeToggle(function(){
+            if (index < questions.length-1) 
+                index++;
+            showQuestion();
+            $('#cn').countdown('stop');
+        });
+        $('#titles').fadeToggle();
+    });
+
+    $('#prev').click(function(){
+        $('#prev i:nth-child(1)').fadeToggle().fadeToggle();
+        $('#titles').fadeToggle(function(){
+            if (index > 0) 
+                index--;
+            showQuestion();
+            $('#cn').countdown('stop');
+        });
+        $('#titles').fadeToggle();
+    });
+
+    $('#refresh').click(function(){
+        $('#refresh i:nth-child(1)').fadeToggle().fadeToggle();
+        $('#titles').fadeToggle(function(){
+            showQuestion();
+            $('#cn').countdown('stop');
+        });
+        $('#titles').fadeToggle();
+        $('#cn').fadeToggle().fadeToggle();
+    });
+
+    showQuestion();
+    $('#cn').countdown('stop');
+    $('#cn').html('00:00');
+
+ </script>
+ <!-- end JAVASCRIPT -->
+
+</body>
+</html>
